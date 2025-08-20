@@ -87,6 +87,8 @@ Total expenses for cloud additions and on – prem additions= $64,530
 
 - **Network Topology Diagram:** Segmented VLANs, DMZ, VPN, RDP Gateway, IoT and wireless VLANs.
 
+![Network Topology](diagrams/Picture1.png)
+
 ## Tools Recommendations: Replacement or Retention of Security Tools for Cost Savings and Efficiency
 
 | Tool                | Recommendation | Estimated Cost (Yearly) | Reason                                                                 | Replace With                    |
