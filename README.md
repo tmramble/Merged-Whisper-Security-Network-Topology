@@ -15,16 +15,19 @@ Executive Summary: Company A (Whisper Security) is a global financial institutio
 essional. This document details the business requirements of the newly merged Whisper Security, which addresses past and future infrastructure, security, and network requirements. Currently, the budget set forth for this merger is $50,000. 
 
 - **Business Requirements:** Defines functional and non-functional requirements for the merged company.
+  
 | Ref # | Requirement | Reason | Priority |
 |-------|------------|--------|---------|
-| BR-1 | Implement network segmentation to isolate sensitive systems (i.e., servers, databases, etc.) | Company B database server (which likely holds sensitive data) is exposed to the internet; Company A lacks the segmentation template to easily merge Company B into its network. | Must |
-| BR-2 | Ensure compliance with HIPAA, PCI DSS, and GDPR by implementing encryption | Company A handles financial data while Company B lacks internal infrastructure | Must |
-| BR-3 | Adopt cloud infrastructure (Azure) to create scalability, redundancy, and availability | Company B topology indicated multiple single points of failure | Must |
-| BR-4 | Enforcing MFA on all user accounts (on-prem and cloud) | Company A has weak password requirements. Both companies lack password rotation reinforcement | Must |
-| BR-5 | Replace end-of-life operating systems and software | Both companies are currently using unsupported Windows versions | Must |
-| BR-6 | Deploy Security Logging and monitoring through one SIEM | Company B lacks policies and documentation for security. Company B also lacks a cyber professional. | Must |
+| BR-1 | Implement network segmentation to isolate sensitive systems (i.e., servers, databases, etc.) | Company B database server (which likely holds sensitive data) is exposed to the internet.<br>Company A lacks the segmentation template to easily merge Company B into its network. | Must |
+| BR-2 | Ensure compliance with HIPAA, PCI DSS, and GDPR by implementing encryption | Company A handles financial data.<br>Company B lacks internal infrastructure. | Must |
+| BR-3 | Adopt cloud infrastructure (Azure) to create scalability, redundancy, and availability | Company B topology indicated multiple single points of failure. | Must |
+| BR-4 | Enforce MFA on all user accounts (on-prem and cloud) | Company A has weak password requirements.<br>Both companies lack password rotation enforcement. | Must |
+| BR-5 | Replace end-of-life operating systems and software | Both companies are currently using unsupported Windows versions. | Must |
+| BR-6 | Deploy security logging and monitoring through one SIEM | Company B lacks policies and documentation for security.<br>Company B also lacks a dedicated cyber professional. | Must |
 
-A.	Identifying infrastructure and networking problems
+
+A.	**Identifying infrastructure and networking problems**
+
 a.	Company A:
 i.	Network
 1.	Open ports and excessive access are unnecessary and pose a risk not just to attackers who want to interrupt business but those that want to steal data.
@@ -49,25 +52,25 @@ i.	Vulnerabilities:
 1.	Company B has many outdated operating systems like Windows XP and many legacy servers are lacking updates. Software vulnerabilities are taken advantage of regularly by attackers.
 2.	Apache Tomcat vulnerability means that there is a remote execution flow in the protocol, allowing attackers to execute arbitrary code remotely. This is highlighted as a critical risk
 
-- **Risk Assessment:** Identifies vulnerabilities, compliance gaps, and security risks from both companies.
+## B. Identify Two Existing Vulnerabilities for Each Company
+
+### Company A
+
+| Vulnerability | Description | Risk Level |
+|---------------|------------|-----------|
+| Open Ports 21-90, 3389 | Includes FTP, Telnet, and RDP, which are common attack vectors if not properly secured. | High |
+| Orphaned User Accounts | When an employee is terminated, accounts remain active. This may allow attackers to exploit unused accounts and indicates poor data removal practices. | Moderate |
+
+### Company B
+
+| Vulnerability | Description | Risk Level |
+|---------------|------------|-----------|
+| Outdated Operating Systems | Many systems run Windows XP and legacy servers lacking updates, making them vulnerable to exploits. | High |
+| Apache Tomcat Remote Execution | Vulnerability in Apache Tomcat allows attackers to execute arbitrary code remotely. | Critical |
 
 
 - **Budget & Cost Analysis:** Cloud/on-prem solutions, software consolidation, and cost-benefit evaluation.
-- **Network Topology Diagram:** Segmented VLANs, DMZ, VPN, RDP Gateway, IoT and wireless VLANs.
-
-- **Tools Recommendations:** Replacement or retention of security tools for cost savings and efficiency.
-| Tool                | Recommendation | Estimated Cost (Yearly) | Reason                                                                 | Replace With                    |
-|--------------------|----------------|------------------------|------------------------------------------------------------------------|--------------------------------|
-| DUO                | Replace        | $1500                  | Azure AD Premium (MFA)                                                | Azure AD Premium P1/P2         |
-| Cisco Umbrella     | Replace        | $2000                  | Microsoft Defender can assist with DNS filtering                       | Defender XDR + Endpoint        |
-| Mimecast           | Replace        | $2500                  | Defender (for Office) can provide advanced email protection            | Defender XDR                   |
-| Sophos Intercept X | Replace        | $3000                  | Endpoint detection duplicates for Defender                              | Defender for Endpoint          |
-| Sophos Firewall (2)| Replace        | $3500                  | Fortinet in use and Azure Firewall can be implemented                  | Azure Firewall and Fortinet (1)|
-| Code 42            | Replace        | $1800                  | Insider risk management, data classification, and DLP rules via Microsoft| Microsoft Purview             |
-| Onetrust           | Replace        | $2200                  | Purview can handle data lifecycle and compliance                        | Microsoft Purview              |
-| Akamai             | Keep           | $4500                  | External App Security                                                  |                                |
-| Arctic Wolf        | Replace        | $4500                  | Defender XDR and Sentinel is a SIEM that covers MDR and XDR             | Sentinel and XDR               |
-Savings after tool recommendations = $19,000
+## Budget & Cost Analysis: Cloud/On-Prem Solutions, Software Consolidation, and Cost-Benefit Evaluation
 
 | Category                     | Description                                 | Year 1 Cost        | Notes                                      | Source |
 |-------------------------------|--------------------------------------------|------------------|--------------------------------------------|--------|
@@ -75,10 +78,30 @@ Savings after tool recommendations = $19,000
 | Azure Bastion (RDP Gateway)   | Basic (0.19 hr)                             | $1,650           | Allows secure RDP/SSH without opening ports | [Azure Bastion Pricing | Microsoft Azure](https://azure.microsoft.com/en-us/pricing/details/bastion/) |
 | Two switches Cisco 9400 Catalyst | 48 port switches and labor                | $3,000           | On-prem                                    | [Cisco Catalyst 9400 Series | SecureITStore.com](https://www.secureitstore.com) |
 | Microsoft Defender XDR        | Plan 2 protects endpoints in a merged environment | $39,000      | EDR, Automated investigation (Sentinel), vulnerability management | [Microsoft SMB Security Solutions Pricing | Microsoft Security](https://www.microsoft.com/security) |
-| Azure Infrastructure          | VM’s (servers, domain etc)                 | $12,000          | 5 VMs                                      | [Windows Virtual Machines | Microsoft Azure](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/) |
-| Azure Storage and Backup      | Storage and Cloud backup                    | $3,600           | Estimated Costs                             | [Azure Backup Pricing](https://azure.microsoft.com/en-us/pricing/details/backup) |
-| Azure Networking and Bandwidth| VPN Bandwidth and data transfer fees       | $2,400           | Estimated Costs                             | [Azure Bandwidth Pricing](https://azure.microsoft.com/en-us/pricing/details/bandwidth) |
+| Azure Infrastructure          | VMs (servers, domain, etc.)                 | $12,000          | 5 VMs                                      | [Windows Virtual Machines | Microsoft Azure](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/) |
+| Azure Storage and Backup      | Storage and cloud backup                    | $3,600           | Estimated costs                             | [Azure Backup Pricing](https://azure.microsoft.com/en-us/pricing/details/backup) |
+| Azure Networking and Bandwidth| VPN bandwidth and data transfer fees       | $2,400           | Estimated costs                             | [Azure Bandwidth Pricing](https://azure.microsoft.com/en-us/pricing/details/bandwidth) |
 
+
+Total expenses for cloud additions and on – prem additions= $64,530
+
+- **Network Topology Diagram:** Segmented VLANs, DMZ, VPN, RDP Gateway, IoT and wireless VLANs.
+
+## Tools Recommendations: Replacement or Retention of Security Tools for Cost Savings and Efficiency
+
+| Tool                | Recommendation | Estimated Cost (Yearly) | Reason                                                                 | Replace With                    |
+|--------------------|----------------|------------------------|------------------------------------------------------------------------|--------------------------------|
+| DUO                | Replace        | $1,500                 | Azure AD Premium (MFA)                                                | Azure AD Premium P1/P2         |
+| Cisco Umbrella     | Replace        | $2,000                 | Microsoft Defender can assist with DNS filtering                       | Defender XDR + Endpoint        |
+| Mimecast           | Replace        | $2,500                 | Defender (for Office) can provide advanced email protection            | Defender XDR                   |
+| Sophos Intercept X | Replace        | $3,000                 | Endpoint detection duplicates for Defender                              | Defender for Endpoint          |
+| Sophos Firewall (2)| Replace        | $3,500                 | Fortinet in use and Azure Firewall can be implemented                  | Azure Firewall and Fortinet (1)|
+| Code 42            | Replace        | $1,800                 | Insider risk management, data classification, and DLP rules via Microsoft| Microsoft Purview             |
+| Onetrust           | Replace        | $2,200                 | Purview can handle data lifecycle and compliance                        | Microsoft Purview              |
+| Akamai             | Keep           | $4,500                 | External App Security                                                  |                                |
+| Arctic Wolf        | Replace        | $4,500                 | Defender XDR and Sentinel is a SIEM that covers MDR and XDR             | Sentinel and XDR               |
+
+**Estimated Savings After Tool Recommendations:** $19,000
 ---
 
 ## Tools & Technologies
@@ -127,4 +150,3 @@ Savings after tool recommendations = $19,000
 
 ## Notes
 
-For further details on design decisions, rationale, and network configuration, see `notes/Design_Explanations.md`.
