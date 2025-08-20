@@ -1,0 +1,130 @@
+# Merged Whisper Security – Network Design & Security Integration
+Author: Taylor Ramble
+---
+
+## Project Overview
+
+This project documents the network, security, and infrastructure merger between **Whisper Security** (a global financial institution) and **Health Swipe** (a medical software provider). The merger included business requirements analysis, risk assessment, budget planning, and network topology redesign.  
+
+The goal was to securely integrate Company B’s systems into Company A’s mature cybersecurity posture while meeting regulatory requirements (HIPAA, PCI DSS, GDPR) and remaining within a set budget of $50,000.
+
+---
+
+## Deliverables
+Executive Summary: Company A (Whisper Security) is a global financial institution based in the USA. Whisper Security recently purchased Company B (Health Swipe) that provides software (specialized) to medical providers and accepts credit card payments. This merging of companies includes merging the security, network, and infrastructure of each company. Currently, Whisper Security maintains a mature cybersecurity posture with security staff and tools. Health Swipe mostly relies on third – party vendors and lacks a dedicated cybersecurity prof
+essional. This document details the business requirements of the newly merged Whisper Security, which addresses past and future infrastructure, security, and network requirements. Currently, the budget set forth for this merger is $50,000. 
+
+- **Business Requirements:** Defines functional and non-functional requirements for the merged company.
+| Ref # | Requirement | Reason | Priority |
+|-------|------------|--------|---------|
+| BR-1 | Implement network segmentation to isolate sensitive systems (i.e., servers, databases, etc.) | Company B database server (which likely holds sensitive data) is exposed to the internet; Company A lacks the segmentation template to easily merge Company B into its network. | Must |
+| BR-2 | Ensure compliance with HIPAA, PCI DSS, and GDPR by implementing encryption | Company A handles financial data while Company B lacks internal infrastructure | Must |
+| BR-3 | Adopt cloud infrastructure (Azure) to create scalability, redundancy, and availability | Company B topology indicated multiple single points of failure | Must |
+| BR-4 | Enforcing MFA on all user accounts (on-prem and cloud) | Company A has weak password requirements. Both companies lack password rotation reinforcement | Must |
+| BR-5 | Replace end-of-life operating systems and software | Both companies are currently using unsupported Windows versions | Must |
+| BR-6 | Deploy Security Logging and monitoring through one SIEM | Company B lacks policies and documentation for security. Company B also lacks a cyber professional. | Must |
+
+A.	Identifying infrastructure and networking problems
+a.	Company A:
+i.	Network
+1.	Open ports and excessive access are unnecessary and pose a risk not just to attackers who want to interrupt business but those that want to steal data.
+2.	All users have admin rights which increases risk if any accounts are compromised. With a weak password requirement policy, this risk increases.
+ii.	Infrastructure: 
+1.	Use of End of Life software like Windows Server 2012 and Windows 7 laptops is still in use without any support from a vendor. 
+2.	Poor account management is an extension of a network issue where user accounts that're no longer needed are not being removed, increasing the areas where attackers can take advantage.
+b.	Company B
+i.	Network:
+1.	Critical services are exposed to the internet, allowing attackers to take advantage of a lack of segmentation.
+2.	There is no MFA enforced for all users, meaning that once a merger happens, these users pose a risk in addition to the users from company A with weak passwords. 
+ii.	Infrastructure:
+1.	Company B has many outdated operating systems like Windows XP and many legacy servers are lacking updates. 
+2.	Without a cybersecurity professional, this company lacks proper documentation like SOC 2 and other important documentation such as business continuity and disaster recovery. This poses a risk to all companies they work with unless a risk acceptance form has been provided. 
+B.	Identify two existing vulnerabilities for each company
+a.	Company A:
+i.	Vulnerabilities
+1.	Open ports 21-90, 3389 include FTP, Telnet and RDP which are common ways attackers take advantage of if they are not secured properly. It has been highlighted as a high-risk vulnerability.
+2.	When an employee is terminated, the accounts remain. Leaving these accounts doormat leave the company to be exploited by attackers. This also may indicate that the company doesn't remove the user's data within the company, either. This is identified as a moderate-risk vulnerability.  
+b.	Company B
+i.	Vulnerabilities:
+1.	Company B has many outdated operating systems like Windows XP and many legacy servers are lacking updates. Software vulnerabilities are taken advantage of regularly by attackers.
+2.	Apache Tomcat vulnerability means that there is a remote execution flow in the protocol, allowing attackers to execute arbitrary code remotely. This is highlighted as a critical risk
+
+- **Risk Assessment:** Identifies vulnerabilities, compliance gaps, and security risks from both companies.
+
+
+- **Budget & Cost Analysis:** Cloud/on-prem solutions, software consolidation, and cost-benefit evaluation.
+- **Network Topology Diagram:** Segmented VLANs, DMZ, VPN, RDP Gateway, IoT and wireless VLANs.
+
+- **Tools Recommendations:** Replacement or retention of security tools for cost savings and efficiency.
+| Tool                | Recommendation | Estimated Cost (Yearly) | Reason                                                                 | Replace With                    |
+|--------------------|----------------|------------------------|------------------------------------------------------------------------|--------------------------------|
+| DUO                | Replace        | $1500                  | Azure AD Premium (MFA)                                                | Azure AD Premium P1/P2         |
+| Cisco Umbrella     | Replace        | $2000                  | Microsoft Defender can assist with DNS filtering                       | Defender XDR + Endpoint        |
+| Mimecast           | Replace        | $2500                  | Defender (for Office) can provide advanced email protection            | Defender XDR                   |
+| Sophos Intercept X | Replace        | $3000                  | Endpoint detection duplicates for Defender                              | Defender for Endpoint          |
+| Sophos Firewall (2)| Replace        | $3500                  | Fortinet in use and Azure Firewall can be implemented                  | Azure Firewall and Fortinet (1)|
+| Code 42            | Replace        | $1800                  | Insider risk management, data classification, and DLP rules via Microsoft| Microsoft Purview             |
+| Onetrust           | Replace        | $2200                  | Purview can handle data lifecycle and compliance                        | Microsoft Purview              |
+| Akamai             | Keep           | $4500                  | External App Security                                                  |                                |
+| Arctic Wolf        | Replace        | $4500                  | Defender XDR and Sentinel is a SIEM that covers MDR and XDR             | Sentinel and XDR               |
+Savings after tool recommendations = $19,000
+
+| Category                     | Description                                 | Year 1 Cost        | Notes                                      | Source |
+|-------------------------------|--------------------------------------------|------------------|--------------------------------------------|--------|
+| Azure VPN Gateway             | VPN Gateway                                 | $2,880           | Includes bandwidth and tier VpnGw1         | [VPN Gateway Pricing | Microsoft Azure](https://azure.microsoft.com/en-us/pricing/details/vpn-gateway/) |
+| Azure Bastion (RDP Gateway)   | Basic (0.19 hr)                             | $1,650           | Allows secure RDP/SSH without opening ports | [Azure Bastion Pricing | Microsoft Azure](https://azure.microsoft.com/en-us/pricing/details/bastion/) |
+| Two switches Cisco 9400 Catalyst | 48 port switches and labor                | $3,000           | On-prem                                    | [Cisco Catalyst 9400 Series | SecureITStore.com](https://www.secureitstore.com) |
+| Microsoft Defender XDR        | Plan 2 protects endpoints in a merged environment | $39,000      | EDR, Automated investigation (Sentinel), vulnerability management | [Microsoft SMB Security Solutions Pricing | Microsoft Security](https://www.microsoft.com/security) |
+| Azure Infrastructure          | VM’s (servers, domain etc)                 | $12,000          | 5 VMs                                      | [Windows Virtual Machines | Microsoft Azure](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/) |
+| Azure Storage and Backup      | Storage and Cloud backup                    | $3,600           | Estimated Costs                             | [Azure Backup Pricing](https://azure.microsoft.com/en-us/pricing/details/backup) |
+| Azure Networking and Bandwidth| VPN Bandwidth and data transfer fees       | $2,400           | Estimated Costs                             | [Azure Bandwidth Pricing](https://azure.microsoft.com/en-us/pricing/details/bandwidth) |
+
+---
+
+## Tools & Technologies
+
+- **Visio** – Network topology design
+- **Microsoft Azure** – Cloud infrastructure and VPN/Bastion deployment
+- **Microsoft Defender & Sentinel** – Security monitoring (MDR, XDR, SIEM)
+- **Cisco Catalyst Switches & Fortinet Firewall** – On-prem network
+- **Excel/Sheets** – Budget and cost analysis
+- **Azure AD Premium P1/P2** – MFA and identity management
+
+---
+
+## Key Network Design Decisions
+
+1. **Network Segmentation:** VLANs for servers, computers, IoT, and wireless networks to isolate traffic and reduce lateral movement.
+2. **DMZ Enhancements:** Added VPN Gateway and RDP Gateway for secure remote access with MFA.
+3. **Core Stack Redundancy:** Dual stacked switches to remove single points of failure and ensure high availability.
+4. **Tool Consolidation:** Replaced multiple unmanaged tools with centralized Microsoft stack to save $19,000 annually.
+
+---
+
+## Regulatory Compliance
+
+| Regulatory Requirement | Implementation |
+|------------------------|----------------|
+| **HIPAA** | PHI isolated with VLAN segmentation; DMZ protected with Fortinet firewall; VPN gateway enforces MFA for secure remote access. |
+| **PCI-DSS** | Cardholder data protected via firewall, VPN, and MFA; secure remote access implemented. |
+
+---
+
+## Outcomes & Lessons Learned
+
+- Designed a scalable, secure merged network addressing both companies’ vulnerabilities.
+- Reduced complexity and cost by consolidating redundant security tools.
+- Gained hands-on experience with network segmentation, cloud integration, and secure remote access.
+- Demonstrated practical application of regulatory compliance in network design.
+
+---
+
+## Screenshots/Diagrams
+
+![Network Topology](diagrams/Network_Topology.png)
+
+---
+
+## Notes
+
+For further details on design decisions, rationale, and network configuration, see `notes/Design_Explanations.md`.
